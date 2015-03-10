@@ -2,7 +2,6 @@ package config
 
 import (
 	"encoding/json"
-	"log"
 	"os"
 	"path"
 )
@@ -13,10 +12,10 @@ var (
 
 type Configurator interface {
 	ConfDir() string
-	InitPost()
+	InitPost() error
 }
 
-func InitConfig(c Configurator, filename string) {
+func InitConfig(c Configurator, filename string) (err error) {
 	dirConf := c.ConfDir()
 	if dirConf == "" {
 		dirConf = defaultDirConf
@@ -28,13 +27,18 @@ func InitConfig(c Configurator, filename string) {
 
 	f, err := os.Open(dirConf + "/" + filename)
 	if err != nil {
-		log.Fatalln("Configuration file not found:", err)
+		return err
 	}
 
 	err = json.NewDecoder(f).Decode(c)
 	if err != nil {
-		log.Fatalln("Configuration decoding failed:", err)
+		return err
 	}
 
-	c.InitPost()
+	err = c.InitPost()
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
