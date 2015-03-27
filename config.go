@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	defaultDirConf = "/etc/" + path.Base(os.Args[0])
+	DefaultConfDir = "/etc/" + path.Base(os.Args[0])
 )
 
 type Configurator interface {
@@ -18,7 +18,7 @@ type Configurator interface {
 func InitConfig(c Configurator, filename string) (err error) {
 	dirConf := c.ConfDir()
 	if dirConf == "" {
-		dirConf = defaultDirConf
+		dirConf = DefaultConfDir
 	}
 
 	if filename == "" {
