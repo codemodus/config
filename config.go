@@ -1,7 +1,7 @@
 // Package config provides an interface and init function for handling
 // configuration values stored as JSON.  The JSON structure is defined
 // by a user configurable struct which implements Configurator.  Nested
-// configuration files can be handled so long as InitConfig() is called within
+// configuration files can be handled so long as Init() is called within
 // the parent InitPost().
 package config
 
@@ -23,17 +23,17 @@ type Configurator interface {
 }
 
 // InitConfig decodes the provided JSON file into the provided Configurator.
-func InitConfig(c Configurator, filename string) (err error) {
-	dirConf := c.ConfDir()
-	if dirConf == "" {
-		dirConf = DefaultConfDir
+func Init(c Configurator, filename string) (err error) {
+	d := c.ConfDir()
+	if d == "" {
+		d = DefaultConfDir
 	}
 
 	if filename == "" {
 		filename = "config.json"
 	}
 
-	f, err := os.Open(dirConf + "/" + filename)
+	f, err := os.Open(d + "/" + filename)
 	if err != nil {
 		return err
 	}
