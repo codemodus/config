@@ -22,13 +22,12 @@ type Configurator interface {
 	InitPost() error
 }
 
-// InitConfig decodes the provided JSON file into the provided Configurator.
+// Init decodes the provided JSON file into the provided Configurator.
 func Init(c Configurator, filename string) (err error) {
 	d := c.ConfDir()
 	if d == "" {
 		d = DefaultConfDir
 	}
-
 	if filename == "" {
 		filename = "config.json"
 	}
@@ -47,6 +46,5 @@ func Init(c Configurator, filename string) (err error) {
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
