@@ -1,8 +1,8 @@
-// Package config provides an interface and init function for handling
-// configuration values stored as JSON.  The JSON structure is defined
-// by a user configurable struct which implements Configurator.  Nested
-// configuration files can be handled so long as Init() is called within
-// the parent InitPost().
+// Package config provides an interface and an initialization function
+// for handling configuration values stored as JSON.  The JSON structure
+// is defined by a user configurable struct which implements Configurator.
+// Nested configuration files can be handled so long as Init is called
+// within the parent InitPost.
 package config
 
 import (
@@ -18,7 +18,11 @@ var (
 
 // Configurator defines the basic functionality required to work with config.
 type Configurator interface {
+	// ConfDir should return the absolute path to the configuration directory
+	// as a string.
 	ConfDir() string
+	// InitPost should contain any post initialization logic to be applied to
+	// the Configurator, and return any processing errors.
 	InitPost() error
 }
 
