@@ -1,8 +1,7 @@
-// Package config provides an interface and an initialization function
-// for handling configuration values stored as JSON.  The JSON structure
-// is defined by a user configurable struct which implements Configurator.
-// Nested configuration files can be handled so long as Init is called
-// within the parent InitPost.
+// Package config provides an interface and initialization function for
+// handling configuration values stored as JSON.  The JSON structure is defined
+// by a user configurable struct which implements Configurator.  Nest
+// Configurator instances by calling Init within the parent's InitPost.
 package config
 
 import (
@@ -50,5 +49,19 @@ func Init(c Configurator, filename string) (err error) {
 	if err != nil {
 		return err
 	}
+	return nil
+}
+
+// Config is provided for embedding default methods needed to satisfy the
+// Configurator interface.
+type Config struct {}
+
+// ConfDir returns the directory which contains the app config.
+func (c *Config) ConfDir() string {
+	return ""
+}
+
+// InitPost runs post config initialization processing.
+func (c *Config) InitPost() error {
 	return nil
 }
