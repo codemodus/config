@@ -11,9 +11,9 @@ import (
 )
 
 var (
-	// DefaultConfDir is the configuration directory fallback.
+	// DefaultDir is the configuration directory fallback.
 	DefaultDir = "/etc/" + path.Base(os.Args[0])
-	// DefaultConfFile is the configuration filename fallback.
+	// DefaultFilename is the configuration filename fallback.
 	DefaultFilename = "config.json"
 )
 
