@@ -1,11 +1,11 @@
 package config_test
 
 import (
+	"errors"
 	"fmt"
 	"testing"
 
 	"github.com/codemodus/config"
-	"errors"
 )
 
 type testConf struct {
