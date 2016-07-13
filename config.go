@@ -12,7 +12,7 @@ import (
 
 var (
 	// DefaultDir is the configuration directory fallback.
-	DefaultDir = "/etc/" + path.Base(os.Args[0])
+	DefaultDir = defaultDirectory()
 	// DefaultFilename is the configuration filename fallback.
 	DefaultFilename = "config.json"
 )
@@ -41,10 +41,8 @@ func Init(c Configurator, file string) (err error) {
 	}
 
 	err = c.InitPost()
-	if err != nil {
-		return err
-	}
-	return nil
+
+	return err
 }
 
 // Config is provided for embedding default methods needed to satisfy the
