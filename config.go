@@ -5,16 +5,25 @@
 package config
 
 import (
+	"bytes"
 	"encoding/json"
+	"errors"
+	"fmt"
+	"io"
 	"os"
 	"path"
+
+	"github.com/BurntSushi/toml"
+	"gopkg.in/yaml.v2"
 )
 
 var (
 	// DefaultDir is the configuration directory fallback.
 	DefaultDir = defaultDirectory()
 	// DefaultFilename is the configuration filename fallback.
-	DefaultFilename = "config.json"
+	DefaultFilename = "config.cnf"
+	// ErrNotUnmarshalable indicates that the relevant data is neither JSON, TOML, or YAML.
+	ErrNotUnmarshalable = errors.New("provided data cannot be unmarshaled")
 )
 
 // Configurator defines the basic functionality required to work with config.
@@ -35,7 +44,7 @@ func Init(c Configurator, file string) (err error) {
 		return err
 	}
 
-	err = json.NewDecoder(f).Decode(c)
+	err = decode(f, c)
 	if err != nil {
 		return err
 	}
@@ -52,4 +61,30 @@ type Config struct{}
 // InitPost runs post config initialization processing.
 func (c *Config) InitPost() error {
 	return nil
+}
+
+func decode(f io.Reader, c Configurator) error {
+	bb := &bytes.Buffer{}
+	_, err := bb.ReadFrom(f)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(bb.Bytes(), c)
+	if err == nil {
+		return nil
+	}
+
+	_, err = toml.Decode(bb.String(), c)
+	if err == nil {
+		return nil
+	}
+
+	err = yaml.Unmarshal(bb.Bytes(), c)
+	fmt.Println(c, err)
+	if err == nil {
+		return nil
+	}
+
+	return ErrNotUnmarshalable
 }
