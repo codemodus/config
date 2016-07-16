@@ -20,8 +20,8 @@ var (
 	DefaultDir = defaultDirectory()
 	// DefaultFilename is the configuration filename fallback.
 	DefaultFilename = "config.cnf"
-	// ErrNotUnmarshalable indicates that the relevant data is neither JSON, TOML, or YAML.
-	ErrNotUnmarshalable = errors.New("provided data cannot be unmarshaled")
+	// ErrBadData indicates that the relevant data is not valid JSON or TOML.
+	ErrBadData = errors.New("provided data is not valid JSON or TOML")
 )
 
 // Configurator defines the basic functionality required to work with config.
@@ -42,7 +42,7 @@ func Init(c Configurator, file string) (err error) {
 		return err
 	}
 
-	err = decode(f, c)
+	err = unmarshalFromReader(f, c)
 	if err != nil {
 		return err
 	}
@@ -61,7 +61,7 @@ func (c *Config) InitPost() error {
 	return nil
 }
 
-func decode(f io.Reader, c Configurator) error {
+func unmarshalFromReader(f io.Reader, c Configurator) error {
 	bb := &bytes.Buffer{}
 	_, err := bb.ReadFrom(f)
 	if err != nil {
@@ -73,10 +73,10 @@ func decode(f io.Reader, c Configurator) error {
 		return nil
 	}
 
-	_, err = toml.Decode(bb.String(), c)
+	err = toml.Unmarshal(bb.Bytes(), c)
 	if err == nil {
 		return nil
 	}
 
-	return ErrNotUnmarshalable
+	return ErrBadData
 }
