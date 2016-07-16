@@ -8,13 +8,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"os"
 	"path"
 
 	"github.com/BurntSushi/toml"
-	"gopkg.in/yaml.v2"
 )
 
 var (
@@ -76,12 +74,6 @@ func decode(f io.Reader, c Configurator) error {
 	}
 
 	_, err = toml.Decode(bb.String(), c)
-	if err == nil {
-		return nil
-	}
-
-	err = yaml.Unmarshal(bb.Bytes(), c)
-	fmt.Println(c, err)
 	if err == nil {
 		return nil
 	}
