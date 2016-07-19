@@ -10,7 +10,7 @@ import (
 	"errors"
 	"io"
 	"os"
-	"path"
+	"path/filepath"
 
 	"github.com/BurntSushi/toml"
 )
@@ -34,7 +34,7 @@ type Configurator interface {
 // Init decodes the provided JSON file into the provided Configurator.
 func Init(c Configurator, file string) (err error) {
 	if file == "" {
-		file = path.Join(DefaultDir, DefaultFilename)
+		file = filepath.Join(DefaultDir, DefaultFilename)
 	}
 
 	f, err := os.Open(file)
