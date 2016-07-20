@@ -10,7 +10,7 @@ func defaultDirectory() string {
 	ext := filepath.Ext(base)
 
 	drv := os.Getenv("SystemDrive")
-	pdDir := "ProgramData"
+	pdDir := `\ProgramData`
 	name := base[0 : len(base)-len(ext)]
 
 	return filepath.Join(drv, pdDir, name, name)
