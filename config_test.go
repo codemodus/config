@@ -20,7 +20,7 @@ type testConf struct {
 
 func (tc *testConf) InitPost() error {
 	emConf := &embeddedConf{}
-	if err := config.Init(emConf, "test_dir/config2.json"); err != nil {
+	if err := config.Init(emConf, "testdata/config2.json"); err != nil {
 		return err
 	}
 	tc.embeddedConf = emConf
@@ -53,7 +53,7 @@ func Example() {
 		TestText   string
 	}{}
 
-	if err := config.Init(myConf, "test_dir/config.json"); err != nil {
+	if err := config.Init(myConf, "testdata/config.json"); err != nil {
 		fmt.Println(err)
 	}
 
@@ -73,7 +73,7 @@ func TestConfig(t *testing.T) {
 		TestText   string
 	}{}
 
-	if err := config.Init(myConf, "test_dir/config.json"); err != nil {
+	if err := config.Init(myConf, "testdata/config.json"); err != nil {
 		t.Fatal(err)
 	}
 
@@ -94,19 +94,19 @@ func TestBadData(t *testing.T) {
 		t.Error("Should have returned error - no config file exists")
 	}
 
-	if err := config.Init(conf, "test_dir/bad.json"); err == nil {
+	if err := config.Init(conf, "testdata/bad.json"); err == nil {
 		t.Error("Should have returned error - no data in config file")
 	}
 
 	badConf := &badConf{}
-	if err := config.Init(badConf, "test_dir/config.json"); err == nil {
+	if err := config.Init(badConf, "testdata/config.json"); err == nil {
 		t.Error("Should have returned error - InitPost returns an error")
 	}
 }
 
 func TestEmbedded(t *testing.T) {
 	conf := &testConf{}
-	if err := config.Init(conf, "test_dir/config.json"); err != nil {
+	if err := config.Init(conf, "testdata/config.json"); err != nil {
 		t.Fatal(err)
 	}
 
