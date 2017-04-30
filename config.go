@@ -16,10 +16,12 @@ import (
 )
 
 var (
-	// DefaultDir is the configuration directory fallback.
-	DefaultDir = defaultDirectory()
+	// DefaultConfDir is the configuration directory fallback.
+	DefaultConfDir = defaultConfDir()
 	// DefaultFilename is the configuration filename fallback.
 	DefaultFilename = "config.cnf"
+	// DefaultLibDir is the lib directory fallback.
+	DefaultLibDir = defaultLibDir()
 	// ErrBadData indicates that the relevant data is not valid JSON or TOML.
 	ErrBadData = errors.New("provided data is not valid JSON or TOML")
 )
@@ -34,7 +36,7 @@ type Configurator interface {
 // Init decodes the provided JSON file into the provided Configurator.
 func Init(c Configurator, file string) (err error) {
 	if file == "" {
-		file = filepath.Join(DefaultDir, DefaultFilename)
+		file = filepath.Join(DefaultConfDir, DefaultFilename)
 	}
 
 	f, err := os.Open(file)

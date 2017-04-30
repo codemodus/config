@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 )
 
-func defaultDirectory() string {
+func defaultDirectory(subdir string) string {
 	base := filepath.Base(os.Args[0])
 	ext := filepath.Ext(base)
 
@@ -13,5 +13,13 @@ func defaultDirectory() string {
 	pdDir := `\ProgramData`
 	name := base[0 : len(base)-len(ext)]
 
-	return filepath.Join(drv, pdDir, name, name)
+	return filepath.Join(drv, pdDir, name, subdir)
+}
+
+func defaultConfDir() string {
+	return defaultDirectory("etc")
+}
+
+func defaultLibDir() string {
+	return defaultDirectory("lib")
 }

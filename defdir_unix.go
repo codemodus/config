@@ -7,12 +7,19 @@ import (
 	"path/filepath"
 )
 
-func defaultDirectory() string {
+func defaultDirectory(dirRoot string) string {
 	base := filepath.Base(os.Args[0])
 	ext := filepath.Ext(base)
 
-	cnfDir := "/etc"
 	name := base[0 : len(base)-len(ext)]
 
-	return filepath.Join(cnfDir, name)
+	return filepath.Join("/", dirRoot, name)
+}
+
+func defaultConfDir() string {
+	return defaultDirectory("/etc")
+}
+
+func defaultLibDir() string {
+	return defaultDirectory("/var/lib")
 }
