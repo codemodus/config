@@ -43,8 +43,11 @@ func Init(c Configurator, file string) (err error) {
 	if err != nil {
 		return err
 	}
+	defer func() {
+		_ = f.Close()
+	}()
 
-	err = unmarshalFromReader(f, c)
+	err = unmarshal(f, c)
 	if err != nil {
 		return err
 	}
@@ -63,7 +66,7 @@ func (c *Config) InitPost() error {
 	return nil
 }
 
-func unmarshalFromReader(f io.Reader, c Configurator) error {
+func unmarshal(f io.Reader, c Configurator) error {
 	bb := &bytes.Buffer{}
 	_, err := bb.ReadFrom(f)
 	if err != nil {
